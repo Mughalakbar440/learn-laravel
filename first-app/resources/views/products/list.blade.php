@@ -70,7 +70,6 @@
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
-
                                         <a href="{{route('products.edit', $product->id)}}" class="btn btn-light btn-sm">
                                             <i class="fas fa-pen"></i>
                                         </a>
