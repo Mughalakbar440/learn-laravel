@@ -87,7 +87,7 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::findOrFail($id);
-       
+
         return view('products.edit', ['product' => $product]);
     }
 
@@ -97,7 +97,7 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $product = Product::findOrFail($id);
-        
+
         $rules = [
             'name' => 'required|min:5',
             'sku' => 'required|min:3',
@@ -128,7 +128,7 @@ class ProductController extends Controller
             $image = $request->image;
             $ext = $image->getClientOriginalExtension();
             $imageName = time() . '.' . $ext; //unique image name
-            \File::delete(public_path('uploads/products'. $imageName));
+            \File::delete(public_path('uploads/products' . $imageName));
             // save image in product directry
             $image->move(public_path('uploads/products'), $imageName);
 
@@ -148,11 +148,10 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         //remove file from the directory so the size is not got bigger
         $imageName = $product->image;
-        
-        \File::delete(public_path('uploads/products'. $imageName));
+
+        \File::delete(public_path('uploads/products' . $imageName));
         //product delete methos
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Product successfully deleted ');
-
     }
 }

@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,11 +7,30 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
-
 <body>
     <div class="bg-dark py-3">
-        <h3 class="text-light text-center">Simple Laravel 11 CRUD</h3>
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="text-light">Simple Laravel 11 CRUD</h3>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ (Auth::user()->name)?Auth::user()->name:'james bond' }} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="text-center">
+                          <a href="{{route('account.logout')}}" class="btn btn-primary align-item-center">logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
+
 
     <div class="container">
         <div class="row justify-content-center mt-4">
