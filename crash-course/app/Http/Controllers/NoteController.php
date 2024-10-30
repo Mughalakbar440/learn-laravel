@@ -16,8 +16,10 @@ class NoteController extends Controller
    
     public function index()
     {
-        $notes = Notes::query()->orderBy('id','desc')->paginate();
-        return view('note.index',['Notes'=>$notes,'success'=>session('success')]) ;
+        $id = Auth::id();
+
+        $notes = Notes::query()->orderBy('id','desc')->where('user_id',$id)->paginate();
+        return view('note.index',['Notes'=>$notes,'message'=>session('success')]) ;
     }
 
     /**
@@ -35,20 +37,23 @@ class NoteController extends Controller
     public function store(StoreNoteRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = 2; 
+        $id = Auth::id();
+        $data['user_id'] =  $id; 
 
         // pre($data);
         Notes::create($data);
    
-        return redirect()->route('note.index')->with("success","data successfully inserted") ;
+        return redirect()->route('note.index')->with("message","data successfully inserted") ;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Notes $note)
     {
-        $note = Notes::find($id);
+        if ($note->user_id !== Auth::id()) {
+           abort(403);
+        }
         return view('note.show',['note'=>$note]);
 
     }
@@ -56,10 +61,11 @@ class NoteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Notes $note)
     {
-        $note = Notes::find($id);
-
+        if ($note->user_id !== Auth::id()) {
+            abort(403);
+         }
         return view('note.edit',['note'=>$note]) ;
     }
 
@@ -71,21 +77,25 @@ class NoteController extends Controller
         // Use validated data directly
         $note->update($request->validated());
     
-        return redirect()->route('note.index')->with('success', 'Note updated successfully!');
+        return redirect()->route('note.show',$note)->with('message', 'Note updated successfully!');
     }
     
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Notes $note)
     {
-        $notes = Notes::find($id);
+
+        if ($note->user_id !== Auth::id()) {
+            abort(403);
+         }
+        $notes = Notes::find($note->id);
         if (!$notes) {
             return redirect()->route('note.index')->with('error', 'Note not found.');
         }
     
         $notes->delete();
-        return redirect()->route('note.index')->with('success', 'Data successfully deleted: ' . $notes->id);
+        return redirect()->route('note.index')->with('message', 'Data successfully deleted: ' . $notes->id);
     }
     
     

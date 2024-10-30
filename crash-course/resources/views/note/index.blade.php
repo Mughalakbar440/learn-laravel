@@ -1,38 +1,35 @@
-<x-layout>
-    <h1>Records</h1>
-    <a class="btn btn-secondary mb-4" href="{{ route('note.create') }}">Add Data</a>
-    <div class="row">
-        @if ($success)
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong> {{ $success }}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        @foreach ($Notes as $note)
-            <div class="col-md-4 mb-4">
-                <div class="card bg-dark text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">Note #{{ $note['id'] }}</h5>
-                        <p class="card-text">
-                            {{ Str::words($note['note'], 30) }}
-                        </p>
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ route('note.edit', $note['id']) }}" class="btn btn-primary btn-sm">Edit</a>
-                            <a href="{{ route('note.show', $note['id']) }}" class="btn btn-success btn-sm">View</a>
+<x-app-layout>
+    <div class="container mx-auto px-4">
+        <h1 class="text-2xl font-bold mb-6 text-white">Records</h1>
+        <a class="bg-gray-500 text-white py-2 px-4 rounded mb-4 inline-block" href="{{ route('note.create') }}">Add
+            Data</a>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                            <form action="{{ route('note.destroy', $note->id) }}" method="POST"
-                                onsubmit="return confirm('Are you sure you want to delete this note?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </div>
+            @foreach ($Notes as $note)
+                <div class="bg-gray-800 text-white p-6 rounded-lg shadow-md">
+                    <h5 class="text-xl font-semibold mb-2">Note #{{ $note['id'] }}</h5>
+                    <p class="mb-4">
+                        {{ Str::words($note['note'], 30) }}
+                    </p>
+                    <div class="flex justify-between">
+                        <a href="{{ route('note.edit', $note['id']) }}"
+                            class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm">Edit</a>
+                        <a href="{{ route('note.show', $note['id']) }}"
+                            class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded text-sm">View</a>
+                        <form action="{{ route('note.destroy', $note->id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete this note?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded text-sm">Delete</button>
+                        </form>
                     </div>
                 </div>
-            </div>
-        @endforeach
-        <div class="d-flex justify-content-center mt-4">
-            {{ $Notes->links('pagination::bootstrap-5') }}
+            @endforeach
+
+        </div>
+        <div class="mt-8 flex justify-center">
+            {{ $Notes->links('pagination::tailwind') }}
         </div>
     </div>
-</x-layout>
+</x-app-layout>

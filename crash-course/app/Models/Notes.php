@@ -25,13 +25,12 @@ class Notes extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Optionally, you can add a boot method to automatically set the user_id
-    // protected static function boot()
-    // {
-    //     parent::boot();
+    protected static function boot()
+    {
+        parent::boot();
 
-    //     static::creating(function ($note) {
-    //         $note->user_id = Auth::id(); // Automatically set the user_id when creating a note
-    //     });
-    // }
+        static::creating(function ($note) {
+            $note->user_id = Auth::id(); // Automatically set the user_id when creating a note
+        });
+    }
 }
